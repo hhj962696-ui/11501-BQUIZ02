@@ -2,7 +2,7 @@
     <legend>會員註冊</legend>
     <div style="color:red">*請設定您要註冊的帳號及密碼(最長12個字元)</div>
     <!-- form:post>table>tr*3>td*2 -->
-    <!-- <form action="" method="post"> -->
+    <form action="" method="post">
         <table>
             <tr>
                 <td>Step1:登入帳號</td>
@@ -10,7 +10,7 @@
             </tr>
             <tr>
                 <td>Step2:登入密碼</td>
-                <td><input type="text" name="pwd1" id="pwd1"></td>
+                <td><input type="text" name="pwd" id="pwd"></td>
             </tr>
             <tr>
                 <td>Step3:再次確認密碼</td>
@@ -28,7 +28,7 @@
 
             </tr>
         </table>
-    <!-- </form> -->
+    </form>
 </fieldset>
 
 
@@ -37,23 +37,33 @@
     function reg(){
         let user = {
             'acc':$("#acc").val(),
-            'pwd1':$("#pwd1").val(),
+            'pwd':$("#pwd").val(),
             'pwd2':$("#pwd2").val(),
             'email':$("#email").val(),
         }
         // console.log(user);
         
         if (user.acc == "" ||
-            user.pwd1 == "" ||
+            user.pwd == "" ||
             user.pwd2 == "" ||
             user.email == ""
         ){
             alert("不可空白");
-        }else if (user.pwd1 != user.pwd2 ){
+        }else if (user.pwd != user.pwd2 ){
             alert("密碼錯誤");
         }else{
-
-            console.log('檢查帳號')
+            // console.log('檢查帳號')
+            console.log(user);
+            $.get("api/chk_acc.php", user, (res)=>{
+                if (parseInt(res) > 0){
+                    alert("帳號重複");
+                }else{
+                    $.post("api/reg.php", user, (res)=>{
+                        alert("註冊完成，歡迎加入");
+                        location.href='do=login'
+                    })
+                }
+            });
         }
 
 

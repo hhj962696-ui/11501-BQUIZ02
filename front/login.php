@@ -14,8 +14,8 @@
             </tr>
             <tr>
                 <td>
-                    <button type="button">登入</button >
-                    <button type="reset">清除</button >
+                    <button type="button" onclick="login()">登入</button>
+                    <button type="reset">清除</button>
 
                 </td>
                 <td>
@@ -26,4 +26,37 @@
             </tr>
         </table>
     </form>
-    </fieldset>
+</fieldset>
+
+
+<script>
+    function login(){
+        let user = {
+            "acc":$("#acc").val(),
+            "pwd":$("#pwd").val()
+        }
+
+        $.get("./api/chk_acc.php", user, (res)=>{
+            // console.log(parseInt(res))
+            if (parseInt(res) > 0){
+                $.post("./api/chk_pw.php", user, (res)=>{
+
+                    if (parseInt(res) > 0){
+                        //登入admin
+                        if (user.acc == 'admin'){
+                            location.href="./api/admin.php";
+                        }else{
+                             location.href="./api/index.php?do=main";   
+                        }
+                    }else{
+                        alert("密碼錯誤");
+                    }
+                })
+            }else{
+                alert("查無帳號");
+                $('#acc, #pwd').val('');
+            }
+        })
+
+    }
+    </script>

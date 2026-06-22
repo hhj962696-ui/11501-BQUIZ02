@@ -66,4 +66,35 @@ class DB
         return $this->pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 
     }
+
+    function save($arg){
+        if(isset($arg['id'])){
+            //update
+
+            $tmp=$this->a2s($arg);
+            $sql="UPDATE $this->table SET ".join(" , ",$tmp);
+            $sql .=" WHERE `id`='{$arg['id']}'";
+
+        }else{
+            //insert
+            $keys=array_keys($arg);
+            $sql="INSERT INTO $this->table (`".join("`,`",$keys)."`) VALUES('".join("','",$arg)."');";
+        }
+    echo $sql;
+        return $this->pdo->exec($sql);
+    }
+
+protected function a2s($array){
+    $tmp=[];
+    foreach($array as $key => $val){
+        $tmp[]="`$key`='$val'";
+               
+    }
+
+    return $tmp;
 }
+
+}
+
+
+$Member = new DB('member');
