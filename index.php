@@ -1,4 +1,4 @@
-﻿<?php include_once "./api/db.php";?>
+﻿<?php include_once "./api/db.php"; ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!-- saved from url=(0039) -->
@@ -20,12 +20,12 @@
 	<iframe name="back" style="display:none;"></iframe>
 	<div id="all">
 		<div id="title">
-			 
-			<?= date("m月 d號 l") ?> | 今日瀏覽: <?= $Total->find(['date'=>date("Y-m-d")])['total']; ?> | 累積瀏覽: <?= $Total->q("select sum(`total`) as 'sum' from `total`")[0]['sum'] ;?>     
+
+			<?= date("m月 d號 l") ?> | 今日瀏覽: <?= $Total->find(['date' => date("Y-m-d")])['total']; ?> | 累積瀏覽: <?= $Total->q("select sum(`total`) as 'sum' from `total`")[0]['sum']; ?>
 			<a href="index.php" style="float:right">回首頁</a>
-			</div>
+		</div>
 		<div id="title2">
-			<a href="index.php" >
+			<a href="index.php">
 				<img src="icon\02B01.jpg" alt="健康促進網-回首頁" title="健康促進網-回首頁">
 			</a>
 		</div>
@@ -42,31 +42,31 @@
 					<marquee behavior="" direction="" style="width:79%;
 					display:inline-block;">請民眾踴躍投稿電子報，讓電子報成為大家相互交流、分享的園地！詳見最新文章
 					</marquee>
-						<span style="width:18%; display:inline-block;">
-							<?php if (isset($_SESSION['login'])):?>
-								歡迎，<?= $_SESSION['login'] ?>
-								<?php if($_SESSION['login'] == 'admin'):?>
-									<br>
-									<button onclick="location.href='admin.php'">管理</botton >
-									<button onclick="location.href='.logout.php'">登出</botton >
-								<?php else:;?>
-									<button onclick="location.href='logout.php'">登出</botton >
-								<?php endif;?>
-							<?php else:;?>
-								<a href="?do=login">會員登入</a>
-							<?php endif;?>	
-						</span>
+					<span style="width:18%; display:inline-block;">
+						<?php if (isset($_SESSION['login'])): ?>
+							歡迎，<?= $_SESSION['login'] ?>
+							<?php if ($_SESSION['login'] == 'admin'): ?>
+								<br>
+								<button onclick="location.href='admin.php'">管理</botton>
+									<button onclick="location.href='.logout.php'">登出</botton>
+									<?php else:; ?>
+										<button onclick="location.href='logout.php'">登出</botton>
+										<?php endif; ?>
+									<?php else:; ?>
+										<a href="?do=login">會員登入</a>
+									<?php endif; ?>
+					</span>
 
 					<div class="">
-						<?php 
-							$do=$_GET['do']??'main';
-							$file="./front/$do.php";
+						<?php
+						$do = $_GET['do'] ?? 'main';
+						$file = "./front/$do.php";
 
-							if (file_exists($file)){
-								include $file;
-							}else{
-								include "./front/main.php";
-							}
+						if (file_exists($file)) {
+							include $file;
+						} else {
+							include "./front/main.php";
+						}
 
 						?>
 					</div>
