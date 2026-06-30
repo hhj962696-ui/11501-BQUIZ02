@@ -1,8 +1,4 @@
-<?php
-    include_once "db.php";
+<?php include_once "db.php";
 
-    unset($_POST['pwd2']);
-    echo $Member->save($_POST);
-
-
-?>
+unset($_POST['pw2']);
+$Mem->save($_POST);

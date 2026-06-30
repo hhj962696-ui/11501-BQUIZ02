@@ -1,18 +1,10 @@
-<?php
-    include_once "db.php";
-    // $_GET['acc'];
-    // $_GET['pwd1'];
-    // $_GET['pwd2'];
-    // $_GET['email'];
+<?php include_once "db.php";
 
-    $chk = $Member->count($_POST);
+$chk = $Mem->count($_POST);
 
-    if ($chk){
-        echo 1;
-        $_SESSION['login']=$_POST['acc'];
-    }else{
-        echo 0;
-    }
-
-
-?>
+if ($chk) {
+    echo 1;
+    $_SESSION['login'] = $_POST['acc'];
+} else {
+    echo 0;
+}

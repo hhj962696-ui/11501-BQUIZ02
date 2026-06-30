@@ -2,4 +2,3 @@
 
 $post = $News->find($_GET['id']);
 echo nl2br($post['content']);
-?>

@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 date_default_timezone_set("Asia/Taipei");
 
@@ -18,7 +17,6 @@ class DB
     function all(...$arg)
     {
         $sql = "SELECT * FROM $this->table ";
-
         if (isset($arg[0])) {
             if (is_array($arg[0])) {
                 $tmp = $this->a2s($arg[0]);
@@ -35,44 +33,9 @@ class DB
         return $this->pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    function save($arg){
-        if(isset($arg['id'])){
-            //update
-
-            $tmp=$this->a2s($arg);
-            $sql="UPDATE $this->table SET ".join(" , ",$tmp);
-            $sql .=" WHERE `id`='{$arg['id']}'";
-
-        }else{
-            //insert
-            $keys=array_keys($arg);
-            $sql="INSERT INTO $this->table (`".join("`,`",$keys)."`) VALUES('".join("','",$arg)."');";
-        }
-    //echo $sql;
-        return $this->pdo->exec($sql);
-    }
-
-
-    function del($arg){
-        $sql="DELETE FROM $this->table ";
-        
-        if(is_array($arg)){
-            $tmp=$this->a2s($arg);
-            $sql .= " WHERE ".join(" AND ",$tmp);
-        }else{
-            $sql .= " WHERE `id`='$arg'";
-        }
-        
-        return $this->pdo->exec($sql);
-
-    }
-
-
-
     function count(...$arg)
     {
         $sql = "SELECT count(*) FROM $this->table ";
-
         if (isset($arg[0])) {
             if (is_array($arg[0])) {
                 $tmp = $this->a2s($arg[0]);
@@ -91,8 +54,7 @@ class DB
 
     function find($arg)
     {
-
-        $sql = "SELECT * FROM $this->table";
+        $sql = "SELECT * FROM $this->table ";
 
         if (is_array($arg)) {
             $tmp = $this->a2s($arg);
@@ -101,11 +63,39 @@ class DB
             $sql .= " WHERE `id`='$arg'";
         }
 
-        // return $this->pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
         return $this->pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
     }
 
-    
+    function save($arg)
+    {
+        if (isset($arg['id'])) {
+            //update
+
+            $tmp = $this->a2s($arg);
+            $sql = "UPDATE $this->table SET " . join(" , ", $tmp);
+            $sql .= " WHERE `id`='{$arg['id']}'";
+        } else {
+            //insert
+            $keys = array_keys($arg);
+            $sql = "INSERT INTO $this->table (`" . join("`,`", $keys) . "`) VALUES('" . join("','", $arg) . "');";
+        }
+        //echo $sql;
+        return $this->pdo->exec($sql);
+    }
+
+    function del($arg)
+    {
+        $sql = "DELETE FROM $this->table ";
+
+        if (is_array($arg)) {
+            $tmp = $this->a2s($arg);
+            $sql .= " WHERE " . join(" AND ", $tmp);
+        } else {
+            $sql .= " WHERE `id`='$arg'";
+        }
+
+        return $this->pdo->exec($sql);
+    }
 
     protected function a2s($array)
     {
@@ -117,41 +107,39 @@ class DB
         return $tmp;
     }
 
-    function q($sql){
+    function q($sql)
+    {
         return $this->pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     }
-
 }
 
-function dd($array){
+function dd($array)
+{
     echo "<pre>";
     print_r($array);
     echo "</pre>";
 }
 
-function to($url){
+function to($url)
+{
     header("location:$url");
 }
 
 
-$Member = new DB('member');
+$Mem = new DB('members');
 $Total = new DB('total');
 $News = new DB('news');
-$Que = new DB('que');
+$Que = new DB("que");
+$Log = new DB('logs');
 
-
-
-// 先預先處理Total，如果當日還沒有人
-if (!isset($_SESSION['total'])){
-    $total = $Total->find(['date'=>date("Y-m-d")]);
-
-    if (!empty($total)){
+if (!isset($_SESSION['total'])) {
+    $total = $Total->find(['date' => date("Y-m-d")]);
+    if (!empty($total)) {
         $total['total']++;
         $Total->save($total);
         $_SESSION['total'] = $total['total'];
-    }else{
-        $Total->save(['date'=>date("Y-m-d"), 'total'=>1]);
+    } else {
+        $Total->save(['date' => date("Y-m-d"), 'total' => 1]);
         $_SESSION['total'] = 1;
     }
-
 }

@@ -28,7 +28,6 @@
 
     getPosts($(".type-item").eq(0).text());
 
-
     $(".type-item").on("click", function() {
         let text = $(this).text();
         $(".nav-item").text(text);
